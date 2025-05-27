@@ -33,8 +33,11 @@ class BasePage:
         language_list = self.driver.find_element(*self.LANGUAGE_LIST)
         return language_list.size
 
-    # run after redirection
-    def wait_for_page_to_load(self):
-        self.wait.until(
+    # run after redirection NOT FOR POSTBACK!
+    def wait_for_page_to_load(self, timeout=30):
+        WebDriverWait(self.driver, timeout).until(
             lambda d: d.execute_script("return document.readyState") == "complete"
         )
+
+    def get_page_title(self):
+        return self.driver.title

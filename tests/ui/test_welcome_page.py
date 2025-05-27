@@ -1,10 +1,14 @@
 import time
 
 import pytest
-from pages.public_pages.welcome_page import WelcomePage
+from selenium.webdriver.common.by import By
 
+from pages.public_pages.welcome_page import WelcomePage
+from pages.public_pages.signup_page import SignupPage
+from pages.public_pages.login_page import LoginPage
 
 pytestmark = pytest.mark.ui
+
 
 @pytest.mark.usefixtures("driver")
 class TestWelcomePage:
@@ -34,8 +38,24 @@ class TestWelcomePage:
         self.welcome_page.click_change_language()
         self.welcome_page.change_to_hebrew()
         self.welcome_page.search_recipe("cream")
-        maintitle = self.welcome_page.get_main_title()
-        assert maintitle == "ברוכים הבאים ל-PANPALS!", f"Unexpected title {maintitle}"
-        recipetitle = self.welcome_page.get_first_recipe_title()
-        assert recipetitle == "פטיט-בור קרם עוגה קרה", f"Unexpected title {recipetitle}"
+        main_title = self.welcome_page.get_main_title()
+        assert main_title == "ברוכים הבאים ל-PANPALS!", f"Unexpected title {main_title}"
+        recipe_title = self.welcome_page.get_first_recipe_title()
+        assert recipe_title == "פטיט-בור קרם עוגה קרה", f"Unexpected title {recipe_title}"
 
+    def test_5_signup_page(self, driver):
+        self.welcome_page.navigate_to_signup()
+        signup_page = SignupPage(self.driver)
+        signup_page.wait_for_element((By.ID, "cphMain_txtUsername"))
+        page_title = signup_page.get_page_title()
+        assert page_title == "Pan Pals - Sign Up", f"Page title is incorrect ({page_title})." \
+                                                 f" Are you navigated to the correct page?"
+
+    def test_6_login_page(self, driver):
+        self.welcome_page.click_logo()
+        self.welcome_page.navigate_to_login()
+        login_page = LoginPage(self.driver)
+        login_page.wait_for_element((By.ID, "cphMain_btnSignUp"))
+        page_title = login_page.get_page_title()
+        assert page_title == "Pan Pals - Login", f"Page title is incorrect ({page_title})." \
+                                                 f" Are you navigated to the correct page?"

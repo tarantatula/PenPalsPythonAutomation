@@ -36,3 +36,15 @@ class WelcomePage(BasePage):
 
     def get_first_recipe_title(self):
         return self.driver.find_element(By.CSS_SELECTOR, ".recipe-details h3 span").text
+
+    def navigate_to_signup(self):
+        signup_button = self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, "signup-button")))
+        signup_button.click()
+
+    def navigate_to_login(self):
+        login_button = self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, "login-button")))
+        login_button.click()
+
+    def get_page_title(self):
+        return self.driver.title
+
