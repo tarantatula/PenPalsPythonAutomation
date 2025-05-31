@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 from pages.base_page import BasePage
 
@@ -17,4 +18,4 @@ class LoginPage(BasePage):
         button_login.click()
 
     def get_validation_error(self):
-        return self.driver.find_element(By.ID, "cphMain_lblNotAuthenticated").text
+        return self.wait.until(EC.visibility_of_element_located((By.ID, "cphMain_lblNotAuthenticated"))).text
