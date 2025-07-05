@@ -2,19 +2,20 @@ import time
 
 import pytest
 from selenium.webdriver.common.by import By
-
 from pages.public_pages.welcome_page import WelcomePage
 from pages.public_pages.signup_page import SignupPage
 from pages.public_pages.login_page import LoginPage
+from tests.base_test import BaseTest
+
 
 pytestmark = pytest.mark.ui
 
 
 @pytest.mark.usefixtures("driver")
-class TestWelcomePage:
+class TestWelcomePage(BaseTest):
 
     def setup_method(self, method):
-        self.driver.get("http://localhost:44763")
+        self.driver.get(f"{self.MAIN_URL}/")
         self.welcome_page = WelcomePage(self.driver)
         self.welcome_page.wait_for_page_to_load()
 
@@ -30,9 +31,9 @@ class TestWelcomePage:
 
     def test_3_language_element(self, driver):
         language_size1 = self.welcome_page.click_change_language()
-        assert language_size1['width'] == 170, f"not expanded {language_size1}"
+        assert language_size1['width'] == 200, f"not expanded {language_size1}"
         language_size2 = self.welcome_page.click_change_language()
-        assert language_size2['width'] != 170, f"expanded {language_size2}"
+        assert language_size2['width'] != 200, f"expanded {language_size2}"
 
     def test_4_change_language(self, driver):
         self.welcome_page.click_change_language()

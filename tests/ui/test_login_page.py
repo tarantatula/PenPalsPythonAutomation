@@ -2,17 +2,17 @@ import time
 
 import pytest
 from selenium.webdriver.common.by import By
-
 from pages.public_pages.login_page import LoginPage
+from tests.base_test import BaseTest
 
 pytestmark = pytest.mark.ui
 
 
 @pytest.mark.usefixtures("driver")
-class TestLoginPage:
+class TestLoginPage(BaseTest):
 
     def setup_method(self, method):
-        self.driver.get("http://localhost:44763/login.aspx")
+        self.driver.get(f"{self.MAIN_URL}/login.aspx")
         self.login_page = LoginPage(self.driver)
         self.login_page.wait_for_page_to_load()
 
@@ -29,7 +29,7 @@ class TestLoginPage:
         self.login_page.click_login()
         self.login_page.wait_for_page_to_load()
         get_url = self.login_page.driver.current_url
-        assert get_url == "http://localhost:44763/login.aspx", f"Incorrect url ({get_url}) are you logged in?"
+        assert get_url == f"{self.MAIN_URL}/login.aspx", f"Incorrect url ({get_url}) are you logged in?"
 
     def test_3_login_success(self):
         self.login_page.set_username("tarantula2")
@@ -37,4 +37,4 @@ class TestLoginPage:
         self.login_page.click_login()
         self.login_page.wait_for_element((By.ID, "cphMain_cphBody_btnAll"))
         get_url = self.login_page.driver.current_url
-        assert get_url == "http://localhost:44763/pages/search.aspx", f"Incorrect url ({get_url}) are you logged in?"
+        assert get_url == f"{self.MAIN_URL}/pages/search.aspx", f"Incorrect url ({get_url}) are you logged in?"
