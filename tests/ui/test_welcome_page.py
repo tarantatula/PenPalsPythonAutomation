@@ -38,6 +38,7 @@ class TestWelcomePage(BaseTest):
     def test_4_change_language(self, driver):
         self.welcome_page.click_change_language()
         self.welcome_page.change_to_hebrew()
+        self.welcome_page = WelcomePage(self.driver) # otherwise stale element because page reloads
         self.welcome_page.search_recipe("cream")
         main_title = self.welcome_page.get_main_title()
         assert main_title == "ברוכים הבאים ל-PANPALS!", f"Unexpected title {main_title}"
